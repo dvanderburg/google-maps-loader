@@ -62,10 +62,10 @@
 			
 			// if the library has already been loaded, immediately resolve the promise
 			//	immediately return to not load the library a second time
-			if (this.isLoaded) {
-				deferred.resolve(google.maps);
-				return;
-			}
+//			if (this.isLoaded) {
+//				deferred.resolve(google.maps);
+//				return deferred.promise();
+//			}
 			
 			// scope for closures
 			var that = this;
