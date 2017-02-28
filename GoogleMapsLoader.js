@@ -14,9 +14,10 @@
 		GoogleMapsLoader
 			.load()
 			.done(function(GoogleMaps) {
-				
 				var map = new GoogleMaps.Map();
-			
+			})
+			.fail(function(e, jqxhr, settings, exception) {
+				console.error(e);
 			})
 	
 */
@@ -70,7 +71,18 @@
 			var that = this;
 			
 			// load the google API
-			$.getScript("https://www.google.com/jsapi", function() {
+			$.ajax({
+				dataType: "script",
+				cache: true,
+				url: "https://www.google.com/jsapi"
+			})
+			.done(function(data, textStatus, jqxhr) {
+				
+				// check for network problem and reject the promise
+				if (jqxhr.readyState == 0) {
+					deferred.reject(jqxhr);
+					return;
+				}
 				
 				// load the maps api
 				google.load("maps", that.version, {
@@ -86,6 +98,9 @@
 					}
 				});
 				
+			})
+			.fail(function(e, jqxhr, settings, exception) {
+				deferred.reject(jqxhr);
 			});
 			
 			// promise represents when the google maps api is loaded
